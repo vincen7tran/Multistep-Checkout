@@ -1,30 +1,29 @@
 class App extends React.Component {
   state = {
+    currentStep: 0,
     checkout: false,
+    personalInfo: {},
   };
 
-  postPersonalForm = ({ firstName, lastName }) => {
-    axios.post('/user', {
-      firstName,
-      lastName
-    })
-    .then(function (response) {
-      console.log(response, 'success');
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-  }
-
-  togglePersonalForm = () => {
-    this.setState({checkout: !this.state.checkout});
+  postPersonalForm = (personalData) => {
+    // axios.post('/user', {
+    //   firstName,
+    //   lastName
+    // })
+    // .then(function (response) {
+    //   console.log(response, 'success');
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
+    this.setState({personalInfo: personalData, currentStep: 2});
   }
 
   render() {
     return (
       <div>
-        {!this.state.checkout && <button onClick={this.togglePersonalForm}>Check Out</button>}
-        {this.state.checkout && <PersonalForm postPersonalForm={this.postPersonalForm}/> }
+        {this.state.currentStep === 0 && <button onClick={() => this.setState({ currentStep: 1 })}>Check Out</button>}
+        {this.state.currentStep === 1 && <PersonalForm postPersonalForm={this.postPersonalForm}/> }
       </div>
       );
     }
@@ -47,17 +46,25 @@ class App extends React.Component {
       this.props.postPersonalForm(this.state);
     }
 
+    onInputChange = (e) => {
+      const name = e.target.name;
+      const value = e.target.value;
+
+      this.setState({ [name]: value });
+    }
+
     render() {
       return (
         <form className="ui form" onSubmit={this.onFormSubmit} action="/">
-          <input type="text" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={e => this.setState({firstName: e.target.value})}/>
-          <input type="text" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={e => this.setState({lastName: e.target.value})}/>
-          <input type="submit" />
+          <h4 className="ui dividing header">Personal Information</h4>
+          <input type="text" name="firstName" placeholder="First Name" value={this.state.firstName} onChange={this.onInputChange}/>
+          <input type="text" name="lastName" placeholder="Last Name" value={this.state.lastName} onChange={this.onInputChange}/>
+          <input type="email" name="email" placeholder="Email" value={this.state.email} onChange={this.onInputChange}/>
+          <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={this.onInputChange}/>
+          <input className="ui button" type="submit" />
         </form>
       );
     }
   }
   
   ReactDOM.render(<App />, document.querySelector('#root'));
-  // <input type="email" name="email" placeholder="Email" value={this.state.email} onChange={e => this.setState({email: e.target.value})}/>
-  // <input type="password" name="password" placeholder="Password" value={this.state.password} onChange={e => this.setState({password: e.target.value})}/>
