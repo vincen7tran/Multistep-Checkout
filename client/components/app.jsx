@@ -4,7 +4,16 @@ class App extends React.Component {
   };
 
   postPersonalForm = ({ firstName, lastName }) => {
-    console.log(firstName, lastName);
+    axios.post('/user', {
+      firstName,
+      lastName
+    })
+    .then(function (response) {
+      console.log(response, 'success');
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
   }
 
   togglePersonalForm = () => {
