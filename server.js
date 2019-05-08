@@ -6,7 +6,7 @@ const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 
-app.post('/user', bodyParser.json(), (req, res) => {
+app.post('/checkout', bodyParser.json(), (req, res) => {
   models.personal.post(req.body, (err, results) => {
     if (err) return console.log(err);
     res.sendStatus(201);
