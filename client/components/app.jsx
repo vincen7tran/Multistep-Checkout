@@ -7,23 +7,21 @@ class App extends React.Component {
   };
 
   postData = () => {
-    axios.post('/checkout', {
-      firstName,
-      lastName
-    })
-    .then(function (response) {
-      console.log(response, 'success');
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    axios.post('/checkout', this.state)
+      .then(function (response) {
+        console.log(response, 'success');
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
   
   handleSubmit = (data) => {
     if (this.state.currentStep === 1) this.setState({personalInfo: data, currentStep: 2});
     else if (this.state.currentStep === 2) this.setState({shippingInfo: data, currentStep: 3});
-    else if (this.state.currentStep === 3) this.setState({creditInfo: data, currentStep: 4});
-    else this.postData(this.state);
+    else if (this.state.currentStep === 3) {
+      this.setState({creditInfo: data, currentStep: 4}, () => this.postData());
+    }
   }
 
   render() {

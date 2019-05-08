@@ -7,10 +7,11 @@ const port = process.env.PORT || 3000;
 app.use(express.static('public'));
 
 app.post('/checkout', bodyParser.json(), (req, res) => {
-  models.personal.post(req.body, (err, results) => {
-    if (err) return console.log(err);
-    res.sendStatus(201);
-  });
+  console.log(req.body);
+  // models.personal.post(req.body, (err, results) => {
+  //   if (err) return console.log(err);
+  //   res.sendStatus(201);
+  // });
 });
 
 app.listen(port, () => console.log(`App listening on Port: ${port}`));
