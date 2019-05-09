@@ -19,11 +19,13 @@ class App extends React.Component {
   handleSubmit = (data) => {
     if (this.state.currentStep === 1) this.setState({personalInfo: data, currentStep: 2});
     else if (this.state.currentStep === 2) this.setState({shippingInfo: data, currentStep: 3});
-    else if (this.state.currentStep === 3) {
-      this.setState({creditInfo: data, currentStep: 4}, () => this.postData());
-    }
+    else if (this.state.currentStep === 3) this.setState({creditInfo: data, currentStep: 4}, () => this.postData());
   }
 
+  reset = () => {
+    this.setState({ personalInfo: {}, shippingInfo: {}, creditInfo: {}, currentStep: 0 });
+  }
+  
   render() {
     return (
       <div>
@@ -31,6 +33,12 @@ class App extends React.Component {
         {this.state.currentStep === 1 && <PersonalForm handleSubmit={this.handleSubmit}/> }
         {this.state.currentStep === 2 && <ShippingForm handleSubmit={this.handleSubmit}/> }
         {this.state.currentStep === 3 && <CreditForm handleSubmit={this.handleSubmit}/> }
+        {this.state.currentStep === 4 && 
+          <div>
+           <div>{JSON.stringify(this.state)}</div>
+           <button className="ui button" onClick={this.reset}>Purchase</button> 
+          </div>
+        }
       </div>
       );
     }
@@ -124,7 +132,7 @@ class App extends React.Component {
         cc: '',
         expiry: '',
         cvv: '',
-        zip: '',
+        billingzip: '',
       };
     }
 
@@ -147,7 +155,7 @@ class App extends React.Component {
           <input type="text" name="cc" placeholder="Credit Card #" value={this.state.cc} onChange={this.onInputChange}/>
           <input type="text" name="expiry" placeholder="Expiry Date" value={this.state.expiry} onChange={this.onInputChange}/>
           <input type="text" name="cvv" placeholder="CVV" value={this.state.cvv} onChange={this.onInputChange}/>
-          <input type="text" name="zip" placeholder="Billing Zip Code" value={this.state.zip} onChange={this.onInputChange}/>
+          <input type="text" name="billingzip" placeholder="Billing Zip Code" value={this.state.zip} onChange={this.onInputChange}/>
           <input className="ui button" type="submit" />
         </form>
       );
