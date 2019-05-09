@@ -6,20 +6,21 @@ class App extends React.Component {
     creditInfo: {}
   };
 
-  postData = () => {
-    axios.post('/checkout', this.state)
+  postData = (url, data) => {
+    console.log(data);
+    axios.post(`/${url}`, data)
       .then(function (response) {
         console.log(response, 'success');
       })
       .catch(function (error) {
-        console.log(error);
+        console.log(error);  
       });
   }
   
   handleSubmit = (data) => {
-    if (this.state.currentStep === 1) this.setState({personalInfo: data, currentStep: 2});
-    else if (this.state.currentStep === 2) this.setState({shippingInfo: data, currentStep: 3});
-    else if (this.state.currentStep === 3) this.setState({creditInfo: data, currentStep: 4}, () => this.postData());
+    if (this.state.currentStep === 1) this.setState({personalInfo: data, currentStep: 2}, () => this.postData('users', this.state.personalInfo));
+    else if (this.state.currentStep === 2) this.setState({shippingInfo: data, currentStep: 3}, () => this.postData('shipping', this.state.shippingInfo));
+    else if (this.state.currentStep === 3) this.setState({creditInfo: data, currentStep: 4}, () => this.postData('credit', this.state.creditInfo));
   }
 
   reset = () => {
